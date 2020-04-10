@@ -27,9 +27,9 @@ custom:
   scriptHooks:
     before:package:createDeploymentArtifacts: npm run build
     before:invoke:local:invoke: npm run build
-    before:deploy:deploy:
-    - aws s3 cp --recursive ./.nuxt/dist/client/ s3://${self:custom.resources.${self:provider.stage}.nuxtBucket}/_nuxt/ --cache-control "max-age=31536000,public,immutable"
-    - aws s3 cp --recursive ./static/ s3://${self:custom.resources.${self:provider.stage}.nuxtBucket}/ --exclude "README.md" --cache-control "max-age=31536000,public,immutable"
+    # before:deploy:deploy:
+    # - aws s3 cp --recursive ./.nuxt/dist/client/ s3://${self:custom.resources.${self:provider.stage}.nuxtBucket}/_nuxt/ --cache-control "max-age=31536000,public,immutable"
+    # - aws s3 cp --recursive ./static/ s3://${self:custom.resources.${self:provider.stage}.nuxtBucket}/ --exclude "README.md" --cache-control "max-age=31536000,public,immutable"
     # after:deploy:finalize:
     #  - aws cloudfront create-invalidation --distribution-id ${cf:${self:service}-${self:provider.stage}.NuxtEdgeDistributionId} --paths "/*"
 functions: ${file(./serverless-app/functions.yml)}
