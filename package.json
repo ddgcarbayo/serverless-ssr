@@ -1,5 +1,5 @@
 {
-  "name": "next-demo-serverless-edge",
+  "name": "ninja-serverless-edge",
   "version": "1.0.0",
   "description": "Nuxt.js running on Lambda@edge",
   "author": "David García",
