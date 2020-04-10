@@ -1,0 +1,3 @@
+- ${file(./serverless-app/resources/bucket.yml)}
+- ${file(./serverless-app/resources/aoi.yml)}
+- ${file(./serverless-app/resources/cloudfront.yml)}

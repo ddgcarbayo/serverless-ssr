@@ -1,0 +1,18 @@
+Resources:
+  NuxtEdgeBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: { Ref: NuxtEdgeBucket }
+      PolicyDocument:
+        Statement:
+        - Action:
+          - "s3:GetObject"
+          Effect: Allow
+          Resource: { "Fn::Join": ["", ["arn:aws:s3:::", { Ref: NuxtEdgeBucket }, "/*" ] ]  }
+          Principal:
+            AWS: { "Fn::Join": [" ", ["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity", { Ref: NuxtEdgeOriginAccessIdentity } ] ] }
+  NuxtEdgeOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: CloudFrontOriginAccessIdentity for ${self:custom.funcPrefix}

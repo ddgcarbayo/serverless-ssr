@@ -1,0 +1,1 @@
+- ${file(./serverless-app/functions/edge.yml)}

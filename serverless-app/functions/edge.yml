@@ -1,0 +1,20 @@
+render:
+  handler: server/edge.handler
+  memorySize: 512
+  timeout: 10
+  lambdaAtEdge:
+    distribution: NuxtEdgeDistribution
+    eventType: origin-request
+  package:
+    exclude:
+    - "assets/**"
+    - "components/**"
+    - "layouts/**"
+    - "components/**"
+    - "middleware/**"
+    - "pages/**"
+    - "plugins/**"
+    include:
+    - ".nuxt/**"
+    - "server/edge.js"
+    - "nuxt.config.js"

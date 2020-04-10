@@ -1,0 +1,124 @@
+Resources:
+  NuxtEdgeDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Comment: ${self:custom.funcPrefix}
+        DefaultCacheBehavior:
+          TargetOriginId: 'NuxtEdgeBucketOrigin'
+          ViewerProtocolPolicy: 'redirect-to-https'
+          MinTTL: 60
+          DefaultTTL: 60
+          MaxTTL: 60
+          Compress: true
+          ForwardedValues:
+            QueryString: true
+          AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          - PUT
+          - POST
+          - PATCH
+          - DELETE
+        DefaultRootObject: ''
+        Enabled: true
+        PriceClass: 'PriceClass_100'
+        HttpVersion: 'http2'
+        IPV6Enabled: false
+        Origins:
+        - Id: 'NuxtEdgeBucketOrigin'
+          DomainName: { 'Fn::GetAtt': [ NuxtEdgeBucket, DomainName ] }
+          S3OriginConfig:
+            OriginAccessIdentity: { "Fn::Join": ["", ["origin-access-identity/cloudfront/", { Ref: NuxtEdgeOriginAccessIdentity } ] ]  }
+        CacheBehaviors:
+        - PathPattern: '*.jpg'
+          AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          TargetOriginId: NuxtEdgeBucketOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: 'https-only'
+          MinTTL: 31536000
+          DefaultTTL: 31536000
+          MaxTTL: 31536000
+          Compress: true
+        - PathPattern: '*.css'
+          AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          TargetOriginId: NuxtEdgeBucketOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: 'https-only'
+          MinTTL: 31536000
+          DefaultTTL: 31536000
+          MaxTTL: 31536000
+          Compress: true
+        - PathPattern: '*.js'
+          AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          TargetOriginId: NuxtEdgeBucketOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: 'https-only'
+          MinTTL: 31536000
+          DefaultTTL: 31536000
+          MaxTTL: 31536000
+          Compress: true
+        - PathPattern: '*.map'
+          AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          TargetOriginId: NuxtEdgeBucketOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: 'https-only'
+          MinTTL: 31536000
+          DefaultTTL: 31536000
+          MaxTTL: 31536000
+          Compress: true
+        - PathPattern: '*.ico'
+          AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          TargetOriginId: NuxtEdgeBucketOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: 'https-only'
+          MinTTL: 31536000
+          DefaultTTL: 31536000
+          MaxTTL: 31536000
+          Compress: true
+        - PathPattern: '*.png'
+          AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          TargetOriginId: NuxtEdgeBucketOrigin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: 'https-only'
+          MinTTL: 31536000
+          DefaultTTL: 31536000
+          MaxTTL: 31536000
+          Compress: true

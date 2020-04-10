@@ -1,0 +1,5 @@
+Resources:
+  NuxtEdgeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:custom.resources.${self:provider.stage}.nuxtBucket}

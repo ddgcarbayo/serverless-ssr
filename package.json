@@ -1,0 +1,35 @@
+{
+  "name": "next-demo-serverless-edge",
+  "version": "1.0.0",
+  "description": "Nuxt.js running on Lambda@edge",
+  "author": "David García",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "build": "nuxt build",
+    "start": "npm run dev",
+    "pro": "cross-env NODE_ENV=production node server/index.js",
+    "remove:dev": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=demo serverless remove --stage dev",
+    "local": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=demo sls invoke local -f render -p cloudfront-test-event.json",
+    "deploy:local": "AWS_SDK_LOAD_CONFIG=true AWS_PROFILE=demo sls deploy --stage dev",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/dotenv": "^1.4.1",
+    "axios": "^0.19.2",
+    "cross-env": "^5.2.0",
+    "express": "^4.16.4",
+    "nuxt-start": "latest",
+    "serverless-http": "github:thuisbioscoop/serverless-http",
+    "vue-client-only": "^2.0.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "latest",
+    "nodemon": "^1.18.9",
+    "nuxt": "latest",
+    "sass-loader": "latest",
+    "serverless-plugin-cloudfront-lambda-edge": "^2.1.0",
+    "serverless-scriptable-plugin": "^1.0.5",
+    "webpack": "^4.42.1"
+  }
+}

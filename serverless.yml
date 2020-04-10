@@ -1,0 +1,53 @@
+service: ${file(./package.json):name}
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'local'}
+  region: ${self:custom.region}
+  deploymentPrefix: ${self:custom.deployment.folder}
+  deploymentBucket:
+    name: ${self:custom.deployment.bucket}
+    blockPublicAccess: true
+  stackTags:
+    project: ${self:service}
+    env: ${opt:stage, 'local'}
+  logRetentionInDays: 3
+  iamRoleStatements: ${file(./serverless-app/iam.yml)}
+custom:
+  funcPrefix: ${self:service}-${self:provider.stage}
+  region: us-east-1
+  deployment:
+    bucket: next-mx-serverless-deploys
+    folder: ${self:service}-${self:provider.stage}
+  resources:
+    dev:
+      nuxtBucket: ${self:service}-${self:provider.stage}-nuxt-web
+    local:
+      nuxtBucket: ${self:service}-dev-nuxt-web
+  scriptHooks:
+    before:package:createDeploymentArtifacts: npm run build
+    before:invoke:local:invoke: npm run build
+    before:deploy:deploy:
+    - aws s3 cp --recursive ./.nuxt/dist/client/ s3://${self:custom.resources.${self:provider.stage}.nuxtBucket}/_nuxt/ --cache-control "max-age=31536000,public,immutable"
+    - aws s3 cp --recursive ./static/ s3://${self:custom.resources.${self:provider.stage}.nuxtBucket}/ --exclude "README.md" --cache-control "max-age=31536000,public,immutable"
+    # after:deploy:finalize:
+    #  - aws cloudfront create-invalidation --distribution-id ${cf:${self:service}-${self:provider.stage}.NuxtEdgeDistributionId} --paths "/*"
+functions: ${file(./serverless-app/functions.yml)}
+resources: ${file(./serverless-app/resources.yml)}
+package:
+  individually: true
+  excludeDevDependencies: true
+plugins:
+  - serverless-plugin-cloudfront-lambda-edge
+  - serverless-scriptable-plugin
+Outputs:
+    NuxtEdgeDistributionDomain:
+      Value:
+        'Fn::GetAtt': [ NuxtEdgeDistribution, DomainName ]
+      Export:
+        Name: NuxtEdgeDistributionDomain
+    NuxtEdgeDistributionId:
+      Value:
+        Ref: NuxtEdgeDistribution
+      Export:
+        Name: NuxtEdgeDistributionId
