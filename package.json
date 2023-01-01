@@ -30,6 +30,6 @@
     "sass-loader": "latest",
     "serverless-plugin-cloudfront-lambda-edge": "^2.1.0",
     "serverless-scriptable-plugin": "^1.0.5",
-    "webpack": "^4.42.1"
+    "webpack": "^5.75.0"
   }
 }
